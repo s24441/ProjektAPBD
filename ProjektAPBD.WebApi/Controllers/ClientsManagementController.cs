@@ -16,7 +16,7 @@ namespace ProjektAPBD.WebApi.Controllers
             _repository = repository;
         }
 
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> AddClient([FromBody] AddClientDTO clientDTO)
         {
             bool result = false;
@@ -34,7 +34,7 @@ namespace ProjektAPBD.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPatch("{idClient}")]
+        [HttpPatch("Update/{idClient}")]
         public async Task<IActionResult> UpdateClient([FromRoute] int idClient, [FromBody]UpdateClientDTO clientDTO)
         {
             bool result = false;
@@ -52,7 +52,7 @@ namespace ProjektAPBD.WebApi.Controllers
             return Ok();
         }
 
-        [HttpDelete("{idPerson}")]
+        [HttpDelete("Delete/{idPerson}")]
         public async Task<IActionResult> RemovePhysicalPerson([FromRoute] int idPerson)
         {
             bool result = false;

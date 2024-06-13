@@ -15,7 +15,7 @@ namespace ProjektAPBD.WebApi.Controllers
             _repository = repository;
         }
 
-        [HttpPost("{idProduct}")]
+        [HttpPost("Add/{idProduct}")]
         public async Task<IActionResult> AddSale([FromRoute] int idProduct, [FromBody] AddSaleDTO saleDTO)
         {
             bool result = false;
@@ -33,7 +33,7 @@ namespace ProjektAPBD.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPost("{idSale}")]
+        [HttpPost("Pay/{idSale}")]
         public async Task<IActionResult> PayForSale([FromRoute] int idSale, decimal value)
         {
             bool result = false;

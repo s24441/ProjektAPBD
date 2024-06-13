@@ -14,8 +14,8 @@ namespace ProjektAPBD.WebApi.Controllers
             _repository = repository;
         }
 
-        [HttpGet("{idProduct}")]
-        public async Task<IActionResult> GetActualIncome([FromRoute] int? idProduct = default, string? currency = default)
+        [HttpGet("Income")]
+        public async Task<IActionResult> GetActualIncome(int? idProduct = default, string? currency = default)
         {
             decimal result = 0;
 
@@ -29,8 +29,8 @@ namespace ProjektAPBD.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{idProduct}")]
-        public async Task<IActionResult> GetIncomePrognosis([FromRoute] int? idProduct = default, string? currency = default)
+        [HttpGet("IncomePrognosis")]
+        public async Task<IActionResult> GetIncomePrognosis(int? idProduct = default, string? currency = default)
         {
             decimal result = 0;
 
