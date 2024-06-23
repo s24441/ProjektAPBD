@@ -19,7 +19,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpPost("Add")]
         public async Task<IActionResult> AddClient([FromBody] AddClientDTO clientDTO)
         {
-            bool result = false;
+            var result = 0;
 
             try {
                 result = await _repository.AddClientAsync(clientDTO);
@@ -28,7 +28,7 @@ namespace ProjektAPBD.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
-            if (!result)
+            if (result < 1)
                 return BadRequest("Can not add client");
 
             return Ok();
@@ -37,7 +37,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpPatch("Update/{idClient}")]
         public async Task<IActionResult> UpdateClient([FromRoute] int idClient, [FromBody]UpdateClientDTO clientDTO)
         {
-            bool result = false;
+            var result = 0;
 
             try {
                 result = await _repository.UpdateClientAsync(idClient, clientDTO);
@@ -46,7 +46,7 @@ namespace ProjektAPBD.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
-            if (!result)
+            if (result < 1)
                 return BadRequest("Can not update client");
 
             return Ok();
@@ -55,7 +55,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpDelete("Delete/{idPerson}")]
         public async Task<IActionResult> RemovePhysicalPerson([FromRoute] int idPerson)
         {
-            bool result = false;
+            var result = 0;
 
             try {
                 result = await _repository.RemovePhysicalPersonAsync(idPerson);
@@ -64,7 +64,7 @@ namespace ProjektAPBD.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
-            if (!result)
+            if (result < 1)
                 return BadRequest("Can not delete given person");
 
             return Ok();

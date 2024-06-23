@@ -4,7 +4,7 @@ namespace ProjektAPBD.WebApi.Interfaces
 {
     public interface ISubscriptionsManagementRepository
     {
-        Task<bool> BuySubscriptionAsync(int idProduct, BuySubscriptionDTO subscriptionDTO);
-        Task<bool> PayForSubscriptionAsync(int idContract, decimal value);
+        Task<int> BuySubscriptionAsync(int idProduct, BuySubscriptionDTO subscriptionDTO, CancellationToken cancellationToken = default);
+        Task<int> PayForSubscriptionAsync(int idContract, decimal value, CancellationToken cancellationToken = default);
     }
 }

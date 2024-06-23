@@ -15,7 +15,7 @@ namespace ProjektAPBD.WebApi.Repositories
             _context = context;
         }
 
-        public async Task<bool> BuySubscriptionAsync(int idProduct, BuySubscriptionDTO subscriptionDTO)
+        public async Task<int> BuySubscriptionAsync(int idProduct, BuySubscriptionDTO subscriptionDTO, CancellationToken cancellationToken = default)
         {
             var paymentDay = DateTime.Now;
 
@@ -61,10 +61,10 @@ namespace ProjektAPBD.WebApi.Repositories
 
             var result = await _context.SaveChangesAsync();
 
-            return result > 0;
+            return result;
         }
 
-        public async Task<bool> PayForSubscriptionAsync(int idContract, decimal value)
+        public async Task<int> PayForSubscriptionAsync(int idContract, decimal value, CancellationToken cancellationToken = default)
         {
             var paymentDay = DateTime.Now;
 
@@ -96,7 +96,7 @@ namespace ProjektAPBD.WebApi.Repositories
             if (isAlreadyOurClient)
                 discount = 5;
 
-            var price = value * (1M - discount / 100);
+            var price = value * (1M - discount / 100M);
 
             var newPayment = new Payment {
                 Date = paymentDay,
@@ -110,7 +110,7 @@ namespace ProjektAPBD.WebApi.Repositories
 
             var result = await _context.SaveChangesAsync();
 
-            return result > 0;
+            return result;
         }
     }
 }

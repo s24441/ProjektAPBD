@@ -16,7 +16,7 @@ namespace ProjektAPBD.WebApi.Repositories
             _exchangeClient = exchangeClient;
         }
 
-        public async Task<decimal> GetActualIncomeAsync(int? idProduct = default, string? currency = default)
+        public async Task<decimal> GetActualIncomeAsync(int? idProduct = default, string? currency = default, CancellationToken cancellationToken = default)
         {
             var today = DateTime.Now;
 
@@ -53,7 +53,7 @@ namespace ProjektAPBD.WebApi.Repositories
             return currencyIncome;
         }
 
-        public async Task<decimal> GetIncomePrognosisAsync(int? idProduct = default, string? currency = default)
+        public async Task<decimal> GetIncomePrognosisAsync(int? idProduct = default, string? currency = default, CancellationToken cancellationToken = default)
         {
             var today = DateTime.Now;
 
@@ -82,7 +82,7 @@ namespace ProjektAPBD.WebApi.Repositories
             return currencyIncome;
         }
 
-        private async Task<decimal> GetMidRateAsync(string currency)
-            => ((decimal?)(await _exchangeClient.GetExchangeRatesAsync(currency))?.Rates.MaxBy(r => r.EffectiveDate)?.Mid ?? throw new Exception("No exchange rates"));
+        private async Task<decimal> GetMidRateAsync(string currency, CancellationToken cancellationToken = default)
+            => ((decimal?)(await _exchangeClient.GetExchangeRatesAsync(currency, cancellationToken))?.Rates.MaxBy(r => r.EffectiveDate)?.Mid ?? throw new Exception("No exchange rates"));
     }
 }

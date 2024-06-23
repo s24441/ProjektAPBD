@@ -4,8 +4,8 @@ namespace ProjektAPBD.WebApi.Interfaces
 {
     public interface IClientsManagementRepository
     {
-        Task<bool> AddClientAsync(AddClientDTO clientDTO);
-        Task<bool> UpdateClientAsync(int idClient, UpdateClientDTO clientDTO);
-        Task<bool> RemovePhysicalPersonAsync(int idPerson);
+        Task<int> AddClientAsync(AddClientDTO clientDTO, CancellationToken cancellationToken = default);
+        Task<int> UpdateClientAsync(int idClient, UpdateClientDTO clientDTO, CancellationToken cancellationToken = default);
+        Task<int> RemovePhysicalPersonAsync(int idPerson, CancellationToken cancellationToken = default);
     }
 }

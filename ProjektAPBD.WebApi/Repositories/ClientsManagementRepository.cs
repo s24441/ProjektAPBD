@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjektAPBD.WebApi.DTOs.ClientsManagement;
+using ProjektAPBD.WebApi.Exceptions;
+using ProjektAPBD.WebApi.Exceptions.ClientManagement;
 using ProjektAPBD.WebApi.Interfaces;
 using ProjektAPBD.WebApi.Models;
 using ProjektAPBD.WebApi.Models.Configuration.Consts;
@@ -16,15 +18,15 @@ namespace ProjektAPBD.WebApi.Repositories
             _context = context;
         }
 
-        public async Task<bool> AddClientAsync(AddClientDTO clientDTO)
+        public async Task<int> AddClientAsync(AddClientDTO clientDTO, CancellationToken cancellationToken = default)
         {
             if (!(clientDTO.PhysicalPerson != default ^ clientDTO.Company != default))
-                throw new Exception("Client has to be either Physical Person or Company");
+                throw new ClientValidationException("Client has to be either Physical Person or Company");
 
             if (clientDTO.PhysicalPerson != default)
             {
-                if (await _context.PersonClients.AnyAsync(p => p.Pesel == clientDTO.PhysicalPerson.Pesel))
-                    throw new Exception("The given pesel number already exists in the database");
+                if (await _context.PersonClients.AnyAsync(p => p.Pesel == clientDTO.PhysicalPerson.Pesel, cancellationToken))
+                    throw new PeselValidationException("The given pesel number already exists in the database");
 
                 var person = new PhysicalPerson
                 {
@@ -51,17 +53,17 @@ namespace ProjektAPBD.WebApi.Repositories
                 _context.CompanyClients.Add(company);
             }
 
-            var result = await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync(cancellationToken);
 
-            return result > 0;
+            return result;
         }
 
-        public async Task<bool> UpdateClientAsync(int idClient, UpdateClientDTO clientDTO)
+        public async Task<int> UpdateClientAsync(int idClient, UpdateClientDTO clientDTO, CancellationToken cancellationToken = default)
         {
-            var client = await _context.Clients.FirstOrDefaultAsync(c => c.IdClient == idClient);
+            var client = await _context.Clients.FirstOrDefaultAsync(c => c.IdClient == idClient, cancellationToken);
 
             if (client == default)
-                throw new Exception("The given client does not exists in the database");
+                throw new ClientNotExistsException("The given client does not exists in the database");
 
             if (clientDTO.Address != default) client.Address = clientDTO.Address;
             if (clientDTO.Email != default) client.Email = clientDTO.Email;
@@ -79,17 +81,17 @@ namespace ProjektAPBD.WebApi.Repositories
                 _context.CompanyClients.Update(company);
             }
 
-            var result = await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync(cancellationToken);
 
-            return result > 0;
+            return result;
         }
 
-        public async Task<bool> RemovePhysicalPersonAsync(int idPerson)
+        public async Task<int> RemovePhysicalPersonAsync(int idPerson, CancellationToken cancellationToken = default)
         {
             var person = await _context.PersonClients.FirstOrDefaultAsync(p => p.IdClient == idPerson);
 
             if (person == default)
-                throw new Exception("The given person does not exists in the database");
+                throw new PersonNotExistsException("The given person does not exists in the database");
 
             person.FirstName = Message.SoftDelete;
             person.LastName = Message.SoftDelete;
@@ -101,7 +103,7 @@ namespace ProjektAPBD.WebApi.Repositories
 
             var result = await _context.SaveChangesAsync(); 
             
-            return result > 0;
+            return result;
         }
     }
 }

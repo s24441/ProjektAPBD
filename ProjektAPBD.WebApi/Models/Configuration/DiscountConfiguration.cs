@@ -20,6 +20,13 @@ namespace ProjektAPBD.WebApi.Models.Configuration
             builder
                 .HasOne(e => e.Product)
                 .WithMany(e => e.Discounts);
+
+            builder.HasData(
+                new Discount() { IdDiscount = 1, DateFrom = DateTime.Now.AddDays(-20), DateTo = DateTime.Now.AddDays(40), IdSoftwareProduct = 1, PercentageValue = 20 },
+                new Discount() { IdDiscount = 2, DateFrom = DateTime.Now.AddDays(-10), DateTo = DateTime.Now.AddDays(50), IdSoftwareProduct = 1, PercentageValue = 25 },
+                new Discount() { IdDiscount = 3, DateFrom = DateTime.Now.AddDays(-20), DateTo = DateTime.Now.AddDays(-10), IdSoftwareProduct = 2, PercentageValue = 50 },
+                new Discount() { IdDiscount = 4, DateFrom = DateTime.Now.AddDays(-1), DateTo = DateTime.Now.AddDays(30), IdSoftwareProduct = 2, PercentageValue = 20 }
+            );
         }
     }
 }

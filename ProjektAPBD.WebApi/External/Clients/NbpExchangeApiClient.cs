@@ -16,7 +16,7 @@ namespace ProjektAPBD.WebApi.External.Clients
             _config = configOptions.Value;
         }
 
-        public async Task<ExchangeRatesDTO?> GetExchangeRatesAsync(string currency)
+        public async Task<ExchangeRatesDTO?> GetExchangeRatesAsync(string currency, CancellationToken cancellationToken = default)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(_config.BaseAddress);

@@ -18,7 +18,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpPost("Buy/{idProduct}")]
         public async Task<IActionResult> BuySubscription([FromRoute] int idProduct, [FromBody] BuySubscriptionDTO subscriptionDTO)
         {
-            bool result = false;
+            var result = 0;
 
             try {
                 result = await _repository.BuySubscriptionAsync(idProduct, subscriptionDTO);
@@ -27,7 +27,7 @@ namespace ProjektAPBD.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
-            if (!result)
+            if (result < 1)
                 return BadRequest("Can not buy this subscription");
 
             return Ok();
@@ -36,7 +36,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpPost("Pay/{idSubscription}")]
         public async Task<IActionResult> PayForSubscription([FromRoute] int idSubscription, decimal value)
         {
-            bool result = false;
+            var result = 0;
 
             try {
                 result = await _repository.PayForSubscriptionAsync(idSubscription, value);
@@ -45,7 +45,7 @@ namespace ProjektAPBD.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
-            if (!result)
+            if (result < 1)
                 return BadRequest("Can not pay for this subsciption");
 
             return Ok();

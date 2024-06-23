@@ -18,7 +18,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpPost("Add/{idProduct}")]
         public async Task<IActionResult> AddSale([FromRoute] int idProduct, [FromBody] AddSaleDTO saleDTO)
         {
-            bool result = false;
+            var result = 0;
 
             try {
                 result = await _repository.AddSaleAsync(idProduct, saleDTO);
@@ -27,7 +27,7 @@ namespace ProjektAPBD.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
-            if (!result)
+            if (result < 1)
                 return BadRequest("Can not add sale");
 
             return Ok();
@@ -36,7 +36,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpPost("Pay/{idSale}")]
         public async Task<IActionResult> PayForSale([FromRoute] int idSale, decimal value)
         {
-            bool result = false;
+            var result = 0;
 
             try {
                 result = await _repository.PayForSaleAsync(idSale, value);
@@ -45,7 +45,7 @@ namespace ProjektAPBD.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
-            if (!result)
+            if (result < 1)
                 return BadRequest("Can not pay for sale");
 
             return Ok();

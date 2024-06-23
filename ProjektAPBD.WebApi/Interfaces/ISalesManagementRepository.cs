@@ -4,7 +4,7 @@ namespace ProjektAPBD.WebApi.Interfaces
 {
     public interface ISalesManagementRepository
     {
-        Task<bool> AddSaleAsync(int idProduct, AddSaleDTO saleDTO);
-        Task<bool> PayForSaleAsync(int idContract, decimal value);
+        Task<int> AddSaleAsync(int idProduct, AddSaleDTO saleDTO, CancellationToken cancellationToken = default);
+        Task<int> PayForSaleAsync(int idContract, decimal value, CancellationToken cancellationToken = default);
     }
 }

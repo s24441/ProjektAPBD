@@ -29,6 +29,12 @@ namespace ProjektAPBD.WebApi.Models.Configuration
                 .HasMany(e => e.Contracts)
                 .WithOne(e => e.Product)
                 .HasForeignKey(e => e.IdSoftwareProduct);
+
+            builder.HasData(
+                new SoftwareProduct() { IdSoftwareProduct = 1, Name = "SuperSoft", Category = "Rozrywka", Description = "Super aplikacja do rozrywki", ActualVersion = "2.1", ActualVersionReleaseDate = DateTime.Now.AddDays(-100) },
+                new SoftwareProduct() { IdSoftwareProduct = 2, Name = "GamexPro", Category = "Design gier", Description = "Interaktywny progam do tworenia gier", ActualVersion = "7.8", ActualVersionReleaseDate = DateTime.Now.AddDays(-20) },
+                new SoftwareProduct() { IdSoftwareProduct = 3, Name = "Alerter", Category = "Rozwój osobisty", Description = "Inteligentny organizer, ktory zawsze przypomni o najważniejszych wydarzeniach", ActualVersion = "1.0", ActualVersionReleaseDate = DateTime.Now.AddDays(-65) }
+            );
         }
     }
 }
