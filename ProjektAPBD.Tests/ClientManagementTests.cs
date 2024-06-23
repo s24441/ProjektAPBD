@@ -11,6 +11,7 @@ using Shouldly;
 
 namespace ProjektAPBD.Tests
 {
+    [Collection("TestsSequence")]
     public class ClientManagementTests
     {
         private ManagementDbContext _context;

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjektAPBD.WebApi.DTOs.ClientsManagement;
 using ProjektAPBD.WebApi.Interfaces;
-using System.Net.Sockets;
 
 namespace ProjektAPBD.WebApi.Controllers
 {

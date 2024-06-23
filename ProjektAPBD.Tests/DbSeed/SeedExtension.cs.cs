@@ -9,10 +9,7 @@ namespace ProjektAPBD.Tests.DbSeed
             .SeedCompanies()
             .SeedPhysicalPersons()
             .SeedProducts()
-            .SeedDiscounts();
-
-        public static ManagementDbContext SalesTestSeed(this ManagementDbContext context) => context
-            .TestSeed()
+            .SeedDiscounts()
             .SeedSales()
             .SeedSalesPayments();
 
@@ -90,6 +87,7 @@ namespace ProjektAPBD.Tests.DbSeed
                 new Sale { IdContract = 1, IdSoftwareProduct = 1, IdClient = 1, CreationDate = DateTime.Now.AddDays(-5), ExpirationDate = DateTime.Now.AddDays(10), SupportYearsAmount = 3, Price = 2000 },
                 new Sale { IdContract = 2, IdSoftwareProduct = 1, IdClient = 2, CreationDate = DateTime.Now.AddDays(5), ExpirationDate = DateTime.Now.AddDays(30), SupportYearsAmount = 3, Price = 2000 },
                 new Sale { IdContract = 3, IdSoftwareProduct = 1, IdClient = 2, CreationDate = DateTime.Now.AddDays(-50), ExpirationDate = DateTime.Now.AddDays(-30), SupportYearsAmount = 3, Price = 2000 },
+                new Sale { IdContract = 4, IdSoftwareProduct = 2, IdClient = 4, CreationDate = DateTime.Now.AddDays(-1), ExpirationDate = DateTime.Now.AddDays(10), SupportYearsAmount = 4, Price = 10000 },
             };
 
             context.Sales.AddRange(entities);
@@ -105,7 +103,10 @@ namespace ProjektAPBD.Tests.DbSeed
             List<Payment> entities = new() {
                 new Payment { IdPayment = 1, IdContract = 1, IdClient = 1, Date = DateTime.Now.AddDays(-3), Value = 500 },
                 new Payment { IdPayment = 2, IdContract = 1, IdClient = 1, Date = DateTime.Now.AddDays(-2), Value = 500 },
-                new Payment { IdPayment = 3, IdContract = 1, IdClient = 1, Date = DateTime.Now.AddDays(-1), Value = 500 }
+                new Payment { IdPayment = 3, IdContract = 1, IdClient = 1, Date = DateTime.Now.AddDays(-1), Value = 500 },
+                new Payment { IdPayment = 4, IdContract = 2, IdClient = 2, Date = DateTime.Now.AddDays(-40), Value = 2000 },
+                new Payment { IdPayment = 5, IdContract = 4, IdClient = 4, Date = DateTime.Now.AddHours(-5), Value = 5000 },
+                new Payment { IdPayment = 6, IdContract = 4, IdClient = 4, Date = DateTime.Now, Value = 5000 },
             };
 
             context.Payments.AddRange(entities);

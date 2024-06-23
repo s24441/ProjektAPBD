@@ -10,21 +10,13 @@ using Shouldly;
 
 namespace ProjektAPBD.Tests
 {
+    [Collection("TestsSequence")]
     public class SalesManagementTests
     {
-        private ManagementDbContext _context;
-
-        private ISalesManagementRepository _salesRepository;
-
-        public SalesManagementTests() 
-        {
-            _context = new ManagementDbContext(new DbContextOptionsBuilder<ManagementDbContext>()
+        private ISalesManagementRepository _salesRepository = new SalesManagementRepository(new ManagementDbContext(new DbContextOptionsBuilder<ManagementDbContext>()
                 .UseInMemoryDatabase(databaseName: "Database")
                 .Options)
-            .SalesTestSeed();
-
-            _salesRepository = new SalesManagementRepository(_context);
-        }
+            .TestSeed());
 
         [Fact]
         public async Task AddSale_Should_Throw_PriceTooLowException_When_Price_Is_Lower_Than_Zero()
@@ -151,8 +143,6 @@ namespace ProjektAPBD.Tests
             await Should
                 .ThrowAsync<ProductNotExistsException>(_salesRepository.AddSaleAsync(id, command, CancellationToken.None));
         }
-
-        /* Spróbować dodać zniżki */
 
         [Fact]
         public async Task AddSale_Should_Add_New_Sale_Into_Database()
