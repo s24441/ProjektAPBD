@@ -23,6 +23,7 @@ namespace ProjektAPBD.Tests
                 .UseInMemoryDatabase(databaseName: "Database")
                 .Options)
             .TestSeed();
+
             _clientsRepository = new ClientsManagementRepository(_context);
         }
 

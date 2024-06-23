@@ -11,8 +11,16 @@ namespace ProjektAPBD.Tests.DbSeed
             .SeedProducts()
             .SeedDiscounts();
 
+        public static ManagementDbContext SalesTestSeed(this ManagementDbContext context) => context
+            .TestSeed()
+            .SeedSales()
+            .SeedSalesPayments();
+
         private static ManagementDbContext SeedCompanies(this ManagementDbContext context)
         {
+            if (context.CompanyClients.Any(c => c.IdClient == 1))
+                return context;
+
             List<Company> entities = new() {
                 new Company() { IdClient = 1, Address = "Koszykowa 24", Email = "evil@corp.com", Phone = "666-333-111", Name = "EvilCorp", KrsNumber = "0000772427" },
                 new Company() { IdClient = 2, Address = "Instalatorów 9/24C", Email = "instpol@gmail.com", Phone = "738-091-364", Name = "InstPol", KrsNumber = "0000766811" },
@@ -26,6 +34,9 @@ namespace ProjektAPBD.Tests.DbSeed
 
         private static ManagementDbContext SeedPhysicalPersons(this ManagementDbContext context)
         {
+            if (context.PersonClients.Any(c => c.IdClient == 4))
+                return context;
+
             List<PhysicalPerson> entities = new() {
                 new PhysicalPerson() { IdClient = 4, Address = "Duracza 76/21", Email = "amichalecki@gmail.com", Phone = "726-487-621", Pesel = "89050729992", FirstName = "Andrzej", LastName = "Michalecki" },
                 new PhysicalPerson() { IdClient = 5, Address = "Duracza 76/21", Email = "asia94@gmail.com", Phone = "669-910-436", Pesel = "94070507007", FirstName = "Joanna", LastName = "Michalecka" },
@@ -39,6 +50,9 @@ namespace ProjektAPBD.Tests.DbSeed
 
         private static ManagementDbContext SeedProducts(this ManagementDbContext context)
         {
+            if (context.Products.Any(c => c.IdSoftwareProduct == 1))
+                return context;
+
             List<SoftwareProduct> entities = new() {
                 new SoftwareProduct() { IdSoftwareProduct = 1, Name = "SuperSoft", Category = "Rozrywka", Description = "Super aplikacja do rozrywki", ActualVersion = "2.1", ActualVersionReleaseDate = DateTime.Now.AddDays(-100) },
                 new SoftwareProduct() { IdSoftwareProduct = 2, Name = "GamexPro", Category = "Design gier", Description = "Interaktywny progam do tworenia gier", ActualVersion = "7.8", ActualVersionReleaseDate = DateTime.Now.AddDays(-20) },
@@ -52,6 +66,9 @@ namespace ProjektAPBD.Tests.DbSeed
 
         private static ManagementDbContext SeedDiscounts(this ManagementDbContext context)
         {
+            if (context.Discounts.Any(c => c.IdDiscount == 1))
+                return context;
+
             List<Discount> entities = new() {
                 new Discount() { IdDiscount = 1, DateFrom = DateTime.Now.AddDays(-20), DateTo = DateTime.Now.AddDays(40), IdSoftwareProduct = 1, PercentageValue = 20 },
                 new Discount() { IdDiscount = 2, DateFrom = DateTime.Now.AddDays(-10), DateTo = DateTime.Now.AddDays(50), IdSoftwareProduct = 1, PercentageValue = 25 },
@@ -60,6 +77,38 @@ namespace ProjektAPBD.Tests.DbSeed
             };
 
             context.Discounts.AddRange(entities);
+            context.SaveChanges();
+            return context;
+        }
+
+        private static ManagementDbContext SeedSales(this ManagementDbContext context)
+        {
+            if (context.Sales.Any(c => c.IdContract == 1))
+                return context;
+
+            List<Sale> entities = new() {
+                new Sale { IdContract = 1, IdSoftwareProduct = 1, IdClient = 1, CreationDate = DateTime.Now.AddDays(-5), ExpirationDate = DateTime.Now.AddDays(10), SupportYearsAmount = 3, Price = 2000 },
+                new Sale { IdContract = 2, IdSoftwareProduct = 1, IdClient = 2, CreationDate = DateTime.Now.AddDays(5), ExpirationDate = DateTime.Now.AddDays(30), SupportYearsAmount = 3, Price = 2000 },
+                new Sale { IdContract = 3, IdSoftwareProduct = 1, IdClient = 2, CreationDate = DateTime.Now.AddDays(-50), ExpirationDate = DateTime.Now.AddDays(-30), SupportYearsAmount = 3, Price = 2000 },
+            };
+
+            context.Sales.AddRange(entities);
+            context.SaveChanges();
+            return context;
+        }
+
+        private static ManagementDbContext SeedSalesPayments(this ManagementDbContext context)
+        {
+            if (context.Payments.Any(c => c.IdPayment == 1))
+                return context;
+
+            List<Payment> entities = new() {
+                new Payment { IdPayment = 1, IdContract = 1, IdClient = 1, Date = DateTime.Now.AddDays(-3), Value = 500 },
+                new Payment { IdPayment = 2, IdContract = 1, IdClient = 1, Date = DateTime.Now.AddDays(-2), Value = 500 },
+                new Payment { IdPayment = 3, IdContract = 1, IdClient = 1, Date = DateTime.Now.AddDays(-1), Value = 500 }
+            };
+
+            context.Payments.AddRange(entities);
             context.SaveChanges();
             return context;
         }
