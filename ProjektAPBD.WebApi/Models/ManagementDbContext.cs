@@ -9,7 +9,7 @@ namespace ProjektAPBD.WebApi.Models
     {
         public ManagementDbContext() { }
 
-        public ManagementDbContext(DbContextOptions options) : base(options) { }
+        public ManagementDbContext(DbContextOptions<ManagementDbContext> options) : base(options) { }
 
         public virtual DbSet<ClientBase> Clients { get; set; }
         public virtual DbSet<PhysicalPerson> PersonClients { get; set; }

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjektAPBD.WebApi.Interfaces;
 
 namespace ProjektAPBD.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class IncomeManagementController : Controller
     {
         private readonly IIncomeManagemenRepository _repository;
@@ -17,14 +19,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpGet("Income")]
         public async Task<IActionResult> GetActualIncome(int? idProduct = default, string? currency = default)
         {
-            decimal result = 0;
-
-            try {
-                result = await _repository.GetActualIncomeAsync(idProduct, currency);
-            }
-            catch (Exception ex) { 
-                return BadRequest(ex.Message);
-            }
+            decimal result = await _repository.GetActualIncomeAsync(idProduct, currency);
 
             return Ok(result);
         }
@@ -32,16 +27,7 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpGet("IncomePrognosis")]
         public async Task<IActionResult> GetIncomePrognosis(int? idProduct = default, string? currency = default)
         {
-            decimal result = 0;
-
-            try
-            {
-                result = await _repository.GetActualIncomeAsync(idProduct, currency);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            decimal result = await _repository.GetActualIncomeAsync(idProduct, currency);
 
             return Ok(result);
         }

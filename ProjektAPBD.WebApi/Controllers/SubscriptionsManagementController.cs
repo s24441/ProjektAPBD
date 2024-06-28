@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjektAPBD.WebApi.DTOs.SubscriptionsManagement;
 using ProjektAPBD.WebApi.Interfaces;
 
@@ -6,6 +7,7 @@ namespace ProjektAPBD.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class SubscriptionsManagementController : Controller
     {
         private readonly ISubscriptionsManagementRepository _repository;
@@ -18,37 +20,17 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpPost("Buy/{idProduct}")]
         public async Task<IActionResult> BuySubscription([FromRoute] int idProduct, [FromBody] BuySubscriptionDTO subscriptionDTO)
         {
-            var result = 0;
+            var result = await _repository.BuySubscriptionAsync(idProduct, subscriptionDTO);
 
-            try {
-                result = await _repository.BuySubscriptionAsync(idProduct, subscriptionDTO);
-            }
-            catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-
-            if (result < 1)
-                return BadRequest("Can not buy this subscription");
-
-            return Ok();
+            return result < 1 ? BadRequest("Can not buy this subscription") : Ok();
         }
 
         [HttpPost("Pay/{idSubscription}")]
         public async Task<IActionResult> PayForSubscription([FromRoute] int idSubscription, decimal value)
         {
-            var result = 0;
+            var result = await _repository.PayForSubscriptionAsync(idSubscription, value);
 
-            try {
-                result = await _repository.PayForSubscriptionAsync(idSubscription, value);
-            }
-            catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-
-            if (result < 1)
-                return BadRequest("Can not pay for this subsciption");
-
-            return Ok();
+            return result < 1 ? BadRequest("Can not pay for this subsciption") : Ok();
         }
     }
 }

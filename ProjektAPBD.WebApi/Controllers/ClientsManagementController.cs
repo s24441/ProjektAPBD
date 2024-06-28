@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjektAPBD.WebApi.DTOs.ClientsManagement;
 using ProjektAPBD.WebApi.Interfaces;
 
@@ -6,6 +7,7 @@ namespace ProjektAPBD.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "admin")]
     public class ClientsManagementController : Controller
     {
         private readonly IClientsManagementRepository _repository;
@@ -18,55 +20,25 @@ namespace ProjektAPBD.WebApi.Controllers
         [HttpPost("Add")]
         public async Task<IActionResult> AddClient([FromBody] AddClientDTO clientDTO)
         {
-            var result = 0;
+            var result = await _repository.AddClientAsync(clientDTO);
 
-            try {
-                result = await _repository.AddClientAsync(clientDTO);
-            }
-            catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-
-            if (result < 1)
-                return BadRequest("Can not add client");
-
-            return Ok();
+            return result < 1 ? BadRequest("Can not add client") : Ok();
         }
 
         [HttpPatch("Update/{idClient}")]
         public async Task<IActionResult> UpdateClient([FromRoute] int idClient, [FromBody]UpdateClientDTO clientDTO)
         {
-            var result = 0;
+            var result = await _repository.UpdateClientAsync(idClient, clientDTO);
 
-            try {
-                result = await _repository.UpdateClientAsync(idClient, clientDTO);
-            }
-            catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-
-            if (result < 1)
-                return BadRequest("Can not update client");
-
-            return Ok();
+            return result < 1 ? BadRequest("Can not update client") : Ok();
         }
 
         [HttpDelete("Delete/{idPerson}")]
         public async Task<IActionResult> RemovePhysicalPerson([FromRoute] int idPerson)
         {
-            var result = 0;
+            var result = await _repository.RemovePhysicalPersonAsync(idPerson);
 
-            try {
-                result = await _repository.RemovePhysicalPersonAsync(idPerson);
-            }
-            catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-
-            if (result < 1)
-                return BadRequest("Can not delete given person");
-
-            return Ok();
+            return result < 1 ? BadRequest("Can not delete given person") : Ok();
         }
     }
 }

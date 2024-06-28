@@ -53,5 +53,37 @@ namespace ProjektAPBD.Tests
 
             result.ShouldBeInRange(450M, 550M);
         }
+
+        [Fact]
+        public async Task GetIncomePrognosis_Should_Return_Income_Prognosis_For_All_Products_When_IdProduct_Is_NUll()
+        {
+            var result = await _incomeRepository.GetIncomePrognosisAsync();
+
+            result.ShouldBe(16000M);
+        }
+
+        [Fact]
+        public async Task GetIncomePrognosis_Should_Return_Income_Prognosis_For_Product_When_IdProduct_Is_Not_NUll()
+        {
+            var result = await _incomeRepository.GetIncomePrognosisAsync(1);
+
+            result.ShouldBeEquivalentTo(6000M);
+        }
+
+        [Fact]
+        public async Task GetIncomePrognosis_Should_Return_USD_Income_Prognosis_For_All_Products_When_IdProduct_Is_NUll_And_Currency_Is_USD()
+        {
+            var result = await _incomeRepository.GetIncomePrognosisAsync(currency: "USD");
+
+            result.ShouldBeInRange(3900M, 4050M);
+        }
+
+        [Fact]
+        public async Task GetIncomePrognosis_Should_Return_USD_Income_Prognosis_For_Product_When_IdProduct_Is_Not_NUll_And_Currency_Is_USD()
+        {
+            var result = await _incomeRepository.GetIncomePrognosisAsync(1, "USD");
+
+            result.ShouldBeInRange(1450M, 1550M);
+        }
     }
 }
